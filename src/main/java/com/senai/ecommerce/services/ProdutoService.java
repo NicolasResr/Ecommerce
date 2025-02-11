@@ -27,4 +27,8 @@ public class ProdutoService {
 		return result.map(x -> new ProdutoDTO(x));
 	}
 
+	public Produto salvar(Produto produto) {
+		return repo.save(produto);
+	}
+
 }
