@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,27 +18,29 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+
+	@Column(columnDefinition = "TEXT")
 	private String descricao;
 	private Double preco;
+
+	@Column(columnDefinition = "TEXT")
 	private String imgUrl;
-	
+
 	@ManyToMany
-	@JoinTable(name = "tb_produto_categoria", joinColumns =
-	@JoinColumn(name = "produto_id"), inverseJoinColumns = 
-	@JoinColumn(name = "categoria_id"))
-	private Set<Categoria> categorias = new HashSet<>();	
+	@JoinTable(name = "tb_produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private Set<Categoria> categorias = new HashSet<>();
+
 	public Produto() {
 	}
-	
+
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemDoPedido> items = new HashSet<>();
-	
-	
+
 	public Produto(Long id, String nome, String descricao, Double preco, String imgUrl) {
 		this.id = id;
 		this.nome = nome;
@@ -90,10 +93,8 @@ public class Produto {
 		return items;
 	}
 
-	public List<Pedido> getPedido(){
+	public List<Pedido> getPedido() {
 		return items.stream().map(X -> X.getPedido()).toList();
 	}
-	
-	
 
 }
